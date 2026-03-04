@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import { randomBytes } from "node:crypto";
 import { encrypt } from "./crypter.ts";
+import { v2 } from "cloudinary";
 
 const secret = process.env["CRYPT_SECRET"];
 if (!secret) throw new Error("No secret found to crypt data");
@@ -16,4 +17,17 @@ export function getCode() {
 
 export function hasCode(code: string) {
   return encrypt(code, secret!);
+}
+
+/**
+ * Generate a downloadable link for Cloudinary assets
+ */
+export function downloadableURL({ cloudID }: { cloudID: string }) {
+  return v2.url(cloudID, {
+    flags: "attachment",
+  });
+}
+
+export function getEncodable(from: string) {
+  return from;
 }

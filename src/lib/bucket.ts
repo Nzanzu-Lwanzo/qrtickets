@@ -8,13 +8,4 @@ v2.config({
   api_secret: process.env["CLOUDINARY_APISECRET"] || "no-api-secret",
 });
 
-/**
- * Generate a downloadable link for Cloudinary assets
- */
-export function downloadableURL({ cloudID }: { cloudID: string }) {
-  return v2.url(cloudID, {
-    flags: "attachment",
-  });
-}
-
 export { v2 as cloudBucket };
