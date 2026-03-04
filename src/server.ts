@@ -2,9 +2,12 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import { uploadQueue } from "./lib/tasks.ts";
+import { decrypt } from "./lib/crypter.ts";
+import prisma from "./lib/prisma.ts";
 
 const App = express();
 const PORT = process.env["PORT"] || 5555;
+const SECRET = process.env["CRYPT_SECRET"] || "i-love-her-she-hates-me";
 
 App.use(express.json());
 
@@ -19,6 +22,36 @@ App.get("/generate", async (req, res) => {
   }
 
   return res.json({ message: `${c} qr codes are being generated ...` });
+});
+
+// Checks that QR Code corresponds to an entry
+// Returns the ID of the entry to be sure that's the number of the ticket
+App.get("/check/:code", async (req, res) => {
+  const data = req.body as { code: string | undefined } | undefined;
+  if (!data || (data && !data.code)) return res.status(400);
+  const decoded = decrypt(data.code!, SECRET);
+  const ticket = await prisma.ticket.findUnique({
+    where: {
+      code: decoded,
+      used: false,
+    },
+  });
+
+  if (!ticket) return res.status(404);
+
+  // Mark the ticket as used
+  const updatedTicket = await prisma.ticket.update({
+    where: { id: ticket.id },
+    data: {
+      used: true,
+      code: null,
+    },
+  });
+
+  return {
+    ticketNumber: updatedTicket.id,
+    isValid: true,
+  };
 });
 
 App.listen(PORT, () =>

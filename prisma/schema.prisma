@@ -9,8 +9,9 @@ datasource db {
 
 model Ticket {
   id        Int      @id @default(autoincrement())
-  code      String
-  qrCode    String
-  cloudID   String
+  code      String?  @unique
+  qrCode    String?
+  cloudID   String?
+  used      Boolean  @default(false)
   createdAt DateTime @default(now())
 }

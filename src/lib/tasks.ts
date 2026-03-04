@@ -3,6 +3,7 @@ import { getCode } from "./utils.ts";
 import { v4 } from "uuid";
 import { uploadQrCode } from "./qrCode.ts";
 import prisma from "./prisma.ts";
+import { BACKEND_ORIGIN } from "./constants.ts";
 
 export const uploadQueue = new Queue("qrcodesupload", {
   connection: {
@@ -28,7 +29,7 @@ export const uploadWorker = new Worker(
 
     // Generate the QR Code image and upload it
     const qrCode = await uploadQrCode({
-      encodable: codes.hash,
+      encodable: `${BACKEND_ORIGIN}/check/${codes.hash}`,
       cloudID,
       folder: "sam-kaya-apotheose",
     });
