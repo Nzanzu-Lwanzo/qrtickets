@@ -24,6 +24,10 @@ App.get("/generate", async (req, res) => {
   return res.json({ message: `${c} qr codes are being generated ...` });
 });
 
+/*
+
+TODO : Uncomment if we need to use this endpoint
+
 // Checks that QR Code corresponds to an entry
 // Returns the ID of the entry to be sure that's the number of the ticket
 App.get("/check/:code", async (req, res) => {
@@ -54,6 +58,7 @@ App.get("/check/:code", async (req, res) => {
   };
 });
 
+*/
 App.listen(PORT, () =>
   console.log(`API running 🚀 on http://localhost:${PORT}`),
 );
