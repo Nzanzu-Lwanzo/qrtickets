@@ -8,8 +8,9 @@ datasource db {
 }
 
 model Ticket {
-  id        Int    @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   code      String
   qrCode    String
-  createdAt String
+  cloudID   String
+  createdAt DateTime @default(now())
 }

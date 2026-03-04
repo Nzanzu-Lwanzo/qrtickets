@@ -1,7 +1,9 @@
 {
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
     "@types/express": "^5.0.6",
     "@types/node": "^25.3.3",
+    "@types/qrcode": "^1.5.6",
     "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.56.1",
     "eslint": "^10.0.2",
@@ -11,14 +13,18 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.4.2",
+    "@prisma/client": "^7.4.2",
+    "bullmq": "^5.70.1",
     "cloudinary": "^2.9.0",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "prisma": "^7.4.2",
-    "qrcode": "^1.5.4"
+    "qrcode": "^1.5.4",
+    "uuid": "^13.0.0"
   },
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/server.ts"
+    "dev": "./redis.sh && nodemon src/server.ts"
   }
 }
